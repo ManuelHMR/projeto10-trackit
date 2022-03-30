@@ -44,6 +44,7 @@ const HomeMain = styled.div`
         font-size: 19.976px;
         line-height: 25px;
         color: #DBDBDB;
+        padding-left: 6px;
     }
     button{
         width: 303px;

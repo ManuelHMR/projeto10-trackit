@@ -1,44 +1,64 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { useState } from "react";
 
 import LogoName from "./LogoName"
 
+const URLPOST = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up`;
+
 export default function Register(){
+    const [userData, setUserData] = useState({
+        email: "",
+        name: "",
+        image: "",
+        password: ""
+    })
+    function registerUser(){
+        console.log(userData)
+        let promise = axios.post(URLPOST, userData);
+        promise.then(response => console.log(response) )
+        promise.catch(err => console.log(err))
+    }
+
     return(
         <HomeMain>
-           <LogoName></LogoName>
-           <input 
-           type="email" 
-           id="email" 
-           placeholder="email"
-        //    value={}
-        //    onChange={}
-           ></input>
-           <input
-           type="password" 
-           id="password" 
-           placeholder="senha"
-        //    value={}
-        //    onChange={}
-           ></input>
-           <input
-           type="text" 
-           id="name" 
-           placeholder="nome"
-        //    value={}
-        //    onChange={}
-           ></input>
-           <input
-           type="url" 
-           id="profilePic" 
-           placeholder="foto"
-        //    value={}
-        //    onChange={}
-           ></input>
-           <button type="submit">Cadastrar</button>
-           <Link to={"/"}>
-               <p>Já tem uma conta? Faça login!</p>
-           </Link>
+            <LogoName></LogoName>
+            <input 
+            type="email" 
+            id="email" 
+            placeholder="email"
+            value={userData.email}
+            onChange={ e => setUserData({...userData, email: e.target.value})}
+            ></input>
+            <input
+            type="password" 
+            id="password" 
+            placeholder="senha"
+            value={userData.password}
+                onChange={ e => setUserData({...userData, password: e.target.value})}
+            ></input>
+            <input
+            type="text" 
+            id="name" 
+            placeholder="nome"
+            value={userData.name}
+            onChange={ e => setUserData({...userData, name: e.target.value})}
+            ></input>
+            <input
+            type="url" 
+            id="image" 
+            placeholder="foto"
+            value={userData.image}
+            onChange={ e => setUserData({...userData, image: e.target.value})}
+            ></input>
+            <button 
+            type="submit"
+            onClick={() => registerUser()}
+            >Cadastrar</button>
+            <Link to={"/"}>
+                <p>Já tem uma conta? Faça login!</p>
+            </Link>
         </HomeMain>
     )
 }
@@ -58,6 +78,7 @@ const HomeMain = styled.div`
         font-size: 19.976px;
         line-height: 25px;
         color: #DBDBDB;
+        padding-left: 6px;
     }
     button{
         width: 303px;
