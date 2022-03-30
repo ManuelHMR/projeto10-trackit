@@ -1,30 +1,49 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { useState } from "react";
 
 import LogoName from "./LogoName";
 
+const URLPOST = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login`;
+
 export default function Home(){
+
+const [userData, setUserData] = useState({
+    email: '',
+    password: ''
+})
+
+function login(){
+    let promise = axios.post(URLPOST, userData);
+    promise.then(response => console.log(response));
+    promise.catch(err => console.log(err));
+}
+
     return(
         <HomeMain>
-           <LogoName></LogoName>
-           <input 
-           type="email" 
-           id="email" 
-           placeholder="email"
-        //    value={}
-        //    onChange={}
-           ></input>
-           <input
-           type="password" 
-           id="password" 
-           placeholder="senha"
-        //    value={}
-        //    onChange={}
-           ></input>
-           <button type="submit">Entrar</button>
-           <Link to={"/cadastro"}>
-               <p>Não tem uma conta? Cadastre-se!</p>
-           </Link>
+            <LogoName></LogoName>
+            <input 
+            type="email" 
+            id="email" 
+            placeholder="email"
+            value={userData.email}
+            onChange={e => setUserData({...userData, email: e.target.value})}
+            ></input>
+            <input
+            type="password" 
+            id="password" 
+            placeholder="senha"
+            value={userData.password}
+            onChange={e => setUserData({...userData, password: e.target.value})}
+            ></input>
+            <button 
+            type="submit"
+            onClick={() => login()}
+            >Entrar</button>
+            <Link to={"/cadastro"}>
+                <p>Não tem uma conta? Cadastre-se!</p>
+            </Link>
         </HomeMain>
     )
 }
