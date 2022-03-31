@@ -7,7 +7,7 @@ import LogoName from "./LogoName";
 
 const URLPOST = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login`;
 
-export default function Home(){
+export default function Home({loginData, setloginData}){
 
 const [userData, setUserData] = useState({
     email: '',
@@ -16,7 +16,10 @@ const [userData, setUserData] = useState({
 
 function login(){
     let promise = axios.post(URLPOST, userData);
-    promise.then(response => console.log(response));
+    promise.then(response => {
+        console.log(response.data);
+        setloginData(response.data)
+    });
     promise.catch(err => console.log(err));
 }
 
@@ -24,23 +27,25 @@ function login(){
         <HomeMain>
             <LogoName></LogoName>
             <input 
-            type="email" 
-            id="email" 
-            placeholder="email"
-            value={userData.email}
-            onChange={e => setUserData({...userData, email: e.target.value})}
+                type="email" 
+                id="email" 
+                placeholder="email"
+                value={userData.email}
+                onChange={e => setUserData({...userData, email: e.target.value})}
             ></input>
             <input
-            type="password" 
-            id="password" 
-            placeholder="senha"
-            value={userData.password}
-            onChange={e => setUserData({...userData, password: e.target.value})}
+                type="password" 
+                id="password" 
+                placeholder="senha"
+                value={userData.password}
+                onChange={e => setUserData({...userData, password: e.target.value})}
             ></input>
-            <button 
-            type="submit"
-            onClick={() => login()}
-            >Entrar</button>
+            <Link to={"/habitos"}>
+                <button 
+                    type="submit"
+                    onClick={() => login()}
+                >Entrar</button>
+            </Link>    
             <Link to={"/cadastro"}>
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>

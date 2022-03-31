@@ -25,36 +25,36 @@ export default function Register(){
         <HomeMain>
             <LogoName></LogoName>
             <input 
-            type="email" 
-            id="email" 
-            placeholder="email"
-            value={userData.email}
-            onChange={ e => setUserData({...userData, email: e.target.value})}
+                type="email" 
+                id="email" 
+                placeholder="email"
+                value={userData.email}
+                onChange={ e => setUserData({...userData, email: e.target.value})}
             ></input>
             <input
-            type="password" 
-            id="password" 
-            placeholder="senha"
-            value={userData.password}
+                type="password" 
+                id="password" 
+                placeholder="senha"
+                value={userData.password}
                 onChange={ e => setUserData({...userData, password: e.target.value})}
             ></input>
             <input
-            type="text" 
-            id="name" 
-            placeholder="nome"
-            value={userData.name}
-            onChange={ e => setUserData({...userData, name: e.target.value})}
+                type="text" 
+                id="name" 
+                placeholder="nome"
+                value={userData.name}
+                onChange={ e => setUserData({...userData, name: e.target.value})}
             ></input>
             <input
-            type="url" 
-            id="image" 
-            placeholder="foto"
-            value={userData.image}
-            onChange={ e => setUserData({...userData, image: e.target.value})}
+                type="url" 
+                id="image" 
+                placeholder="foto"
+                value={userData.image}
+                onChange={ e => setUserData({...userData, image: e.target.value})}
             ></input>
             <button 
-            type="submit"
-            onClick={() => registerUser()}
+                type="submit"
+                onClick={() => registerUser()}
             >Cadastrar</button>
             <Link to={"/"}>
                 <p>Já tem uma conta? Faça login!</p>
