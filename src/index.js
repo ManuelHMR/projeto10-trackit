@@ -8,12 +8,12 @@ import Habits from "./components/Habits";
 import Today from "./components/Today";
 import History from "./components/History";
 
-import "./css/reset.css"
-import "./css/style.css"
+import "./css/reset.css";
+import "./css/style.css";
 
 function App(){
 
-    const [loginData, setloginData] = useState(undefined)
+    const [loginData, setloginData] = useState(undefined);
 
     return(
         <BrowserRouter>
@@ -25,7 +25,7 @@ function App(){
                 <Route path={"/cadastro"} element={<Register/>}></Route>
                 <Route path={"/habitos"} element={<Habits
                     loginData={loginData}
-                />}></Route>
+                    />}></Route>
                 <Route path={"/hoje"} element={<Today/>}></Route>
                 <Route path={"/historico"} element={<History/>}></Route>
             </Routes>

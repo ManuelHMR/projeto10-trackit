@@ -11,7 +11,6 @@ export default function LogoName(){
     )
 }
 
-
 const H1 = styled.h1`
     font-family: 'Playball', cursive;
     color: #126BA5;

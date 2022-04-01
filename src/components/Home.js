@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { useState } from "react";
+import { Bars } from "react-loader-spinner";
 
 import LogoName from "./LogoName";
 
@@ -18,13 +19,14 @@ function login(){
     let promise = axios.post(URLPOST, userData);
     promise.then(response => {
         console.log(response.data);
-        setloginData(response.data)
+        setloginData(response.data);
+
     });
     promise.catch(err => console.log(err));
 }
 
     return(
-        <HomeMain>
+        <Container>
             <LogoName></LogoName>
             <input 
                 type="email" 
@@ -49,13 +51,21 @@ function login(){
             <Link to={"/cadastro"}>
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
-        </HomeMain>
+            <Bars color="#00BFFF" height={80} width={80} />
+        </Container>
     )
 }
-const HomeMain = styled.div`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #ffffff;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+
     input{
         width: 303px;
         height: 45px;

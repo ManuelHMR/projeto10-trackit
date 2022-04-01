@@ -2,14 +2,14 @@ import styled from "styled-components";
 
 export default function Header({image}){
     return(
-        <HeaderMain>
+        <Container>
             <h1>TrackIt</h1>
-            <img src={image} alt='user`s photo'/>
-        </HeaderMain>
+            <img src={image} alt='user`s profile'/>
+        </Container>
     )
 }
 
-const HeaderMain = styled.div`
+const Container = styled.div`
     width: 100%;
     height: 70px;
     position: fixed;
@@ -20,6 +20,7 @@ const HeaderMain = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
     h1{
         font-family: 'Playball', cursive;
         color: #ffffff;
