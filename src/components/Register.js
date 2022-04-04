@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import LogoName from "./LogoName"
 const URLPOST = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up`;
 
 export default function Register(){
+    const navigate = useNavigate();
     const [loading, setloading] = useState(false);
     const [userData, setUserData] = useState({
         email: "",
@@ -19,11 +20,14 @@ export default function Register(){
     function registerUser(){
         setloading(true)
         let promise = axios.post(URLPOST, userData);
-        promise.then(response => console.log(response) )
+        promise.then(() => {
+            alert(`Seu perfil foi cadastrado com sucesso!`)
+            navigate('/')
+        })
         promise.catch(err => {
             setloading(false)
             alert(`${err}
-            
+
             Confira os dados de registro
             `)})
     }
