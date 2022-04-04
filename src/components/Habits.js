@@ -151,7 +151,6 @@ export default function Habits(){
             name: habitName,
             days: saveHabitDays
         }
-        console.log(habitPost)
         let promise = axios.post(URLPOST, habitPost,config)
         promise.then(response=> {
             setHabitButton(false)

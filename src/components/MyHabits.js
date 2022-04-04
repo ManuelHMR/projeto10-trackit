@@ -19,7 +19,6 @@ export default function MyHabits(){
         }
         let promise  = axios.get(URLGET, config)
         promise.then(response => {
-            console.log(response.data)
             setHabitsData(response.data);
         })
         promise.catch(err => console.log(err))

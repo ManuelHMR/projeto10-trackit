@@ -10,7 +10,7 @@ dayjs.locale('pt')
 export default function Today(){
 
     const [todayHabits, settodayHabits] = useState();
-    let now = dayjs();
+    let now = dayjs();  
     
     let loginData = JSON.parse(localStorage.getItem('login'));
     const URLGET = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today`
@@ -80,7 +80,6 @@ export default function Today(){
                 )}
             </>
         )
-    
     }
 }
 
