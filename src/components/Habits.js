@@ -1,4 +1,3 @@
-import Loading from "./Loading"
 import Header from "./Header"
 import MyHabits from "./MyHabits"
 import Footer from "./Footer"
@@ -6,10 +5,17 @@ import Footer from "./Footer"
 import styled from "styled-components"
 import { useState } from "react"
 import UserDataContext from './../providers/UserDataContext';
+import axios from "axios";
 
 export default function Habits(){
-
-    let loginData = JSON.parse(localStorage.getItem('login'))
+    let loginData = JSON.parse(localStorage.getItem('login'));
+    const URLPOST = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`;
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${loginData.token}`
+        }
+    }
+    
 
     const weekdaysDefault = [{
         day: `D`,
@@ -33,23 +39,18 @@ export default function Habits(){
         day: `S`,
         isSelected: false
     }]
+    const [habitName, sethabitName] = useState('')
+    const [habitButton, setHabitButton] = useState(false);
+    const [weekDays, setWeekDays] = useState(weekdaysDefault);
+    const [loading, setLoading] = useState(false);
 
-    const [habitButton, setHabitButton] = useState(false)
-    const [weekDays, setWeekDays] = useState(weekdaysDefault)
-
-    console.log(loginData)
-    if(loginData === null){
-        return (
-            <Loading/>
-        )
-    }
     return(
         <>
             <Header/>
                 <AddHabit>
                     <div className="addHabitUp">
                         <h2>Meus hábitos</h2>
-                        <p onClick={() => setHabitButton(!habitButton)}>+</p>
+                        <p className={`blue-button`} onClick={() => setHabitButton(!habitButton)}>+</p>
                     </div>
                     <NewHabit></NewHabit>
                 </AddHabit>
@@ -68,36 +69,76 @@ export default function Habits(){
             return(
             <div className="centralize">    
                 <div className="box">
-                    <input type="text" placeholder="nome do hábito"></input>
+                    <input type="text" placeholder="nome do hábito" value={habitName} onChange={e=> sethabitName(e.target.value)}></input>
                     <div className="week-days">
                         <DayMap
                             weekDays={weekDays}
                             setWeekDays={setWeekDays}
                         />
                     </div>
+                    <div className="add-habit-below">
+                        <button 
+                            className="cancel"
+                            onClick={()=>setHabitButton(false)}
+                        >Cancelar
+                        </button>
+                        <button
+                            className="save"
+                            onClick={()=>saveHabit()}
+                        >Salvar
+                        </button>
+                    </div>
                 </div>
             </div>    
         )}
+    }
 
+    function selectDay(idx){
+        setWeekDays(weekDays => {
+            weekDays[idx].isSelected = !weekDays[idx].isSelected
+            return [...weekDays]
+        })
+    }
+
+    function DayMap({weekDays}){
+
+        return(
+            <>
+            {weekDays.map((element, index)=> 
+            <p
+                key={index}
+                className={weekDays[index].isSelected? `selected`: `unselected`}
+                onClick={() => selectDay(index)}
+            >{element.day}</p>)}
+            </>
+        )
+    }    
+
+    function saveHabit(){
+        setLoading(true)
+        let saveHabitDays = [];
+        weekDays.map((day, idx)=> {
+            if(day.isSelected){
+                saveHabitDays.push(idx)
+                return [...saveHabitDays]
+            }
+        })
+        let habitPost = {
+            name: habitName,
+            days: saveHabitDays
+        }
+        console.log(habitPost)
+        let promise = axios.post(URLPOST, habitPost,config)
+        promise.then(response=> {
+            setHabitButton(false)
+        })
+        promise.catch((err)=>{
+            setLoading(false)
+            alert(`${err}`)})
     }
 
 }
 
-function DayMap({weekDays, setWeekDays}){
-
-    return(
-        <>
-        {weekDays.map((element, index)=> 
-        <p
-            key={index}
-            className={weekDays[index].isSelected? `selected`: `teste`}
-            onClick={() => setWeekDays((weekDays, idx) => {
-                weekDays[idx].isSelected = !weekDays[idx].isSelected
-            })}
-        >{element.day}</p>)}
-        </>
-    )
-}
 
 const AddHabit = styled.div`
     margin-top: 70px;
@@ -107,7 +148,7 @@ const AddHabit = styled.div`
         font-size: 22.976px;
         color: #126BA5;
     }
-    p{
+    .blue-button{
         width: 40px;
         height: 35px;
         background: #52B6FF;
@@ -119,13 +160,41 @@ const AddHabit = styled.div`
         font-weight: 400;
         font-size: 26.976px;
     }
-    .selected{
-        background-color: black;
+    .selected {
+        color: white;
+        background: #CFCFCF;
+    }
+    .unselected{
+        color: #DBDBDB;
+        background-color: #ffffff;
     }
     .addHabitUp{
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+    .add-habit-below{
+        position: absolute;
+        bottom: 15px;
+        right: 0px;
+    }
+    .cancel{
+        font-weight: 400;
+        font-size: 15.976px;
+        text-align: center;
+        color: #52B6FF;
+        margin-right: 15px;
+        border: none;
+        background-color: #ffffff;
+    }
+    .save{
+        color: #ffffff;
+        width: 84px;
+        height: 35px;
+        background: #52B6FF;
+        border-radius: 4.63636px;
+        margin-right: 15px;
+        border: none;
     }
     .centralize{
         width: 100%;
@@ -164,7 +233,6 @@ const AddHabit = styled.div`
         justify-content: baseline;
     }
     .week-days p{
-        background: #FFFFFF;
         border: 1px solid #D5D5D5;
         box-sizing: border-box;
         border-radius: 5px;
@@ -173,7 +241,10 @@ const AddHabit = styled.div`
         font-weight: 400;
         font-size: 19.976px;
         line-height: 25px;
-        color: #DBDBDB;
+        
         margin-right: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `

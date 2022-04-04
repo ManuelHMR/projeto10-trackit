@@ -1,34 +1,31 @@
 import styled from "styled-components"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
-import Loading from "./Loading"
 
 const URLGET = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today`
 
-export default function MyHabits({token}){
+export default function MyHabits(){
 
     const [habitsData, setHabitsData] = useState();
 
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${token}`
+    
+    
+    useEffect(()=> {
+        let loginData = JSON.parse(localStorage.getItem('login'));
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${loginData.token}`
+            }
         }
-    }
-    
-    let promise  = axios.get(URLGET, config)
-    promise.then(response => {
-        console.log(response.data)
-        setHabitsData(response.data);
-    })
-    
-    promise.catch(err => console.log(err))
-
-    if(habitsData === null){
-        return (
-            <Loading/>
-        )
-    }
+        let promise  = axios.get(URLGET, config)
+        promise.then(response => {
+            console.log(response)
+            setHabitsData(response.data);
+        })
+        promise.catch(err => console.log(err))
+    }, [])
+       
     if(habitsData === undefined){
         return (
             <Container>
