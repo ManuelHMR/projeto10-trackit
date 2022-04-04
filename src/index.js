@@ -7,29 +7,27 @@ import Register from "./components/Register";
 import Habits from "./components/Habits";
 import Today from "./components/Today";
 import History from "./components/History";
+import UserDataContext from "./providers/UserDataContext";
 
 import "./css/reset.css";
 import "./css/style.css";
 
 function App(){
 
-    const [loginData, setloginData] = useState(undefined);
+    const [userContext, setUserContext] = useState({})
 
-    return(
-        <BrowserRouter>
-            <Routes>
-                <Route path={"/"} element={<Home
-                    loginData={loginData}
-                    setloginData={setloginData}
-                />}></Route>
-                <Route path={"/cadastro"} element={<Register/>}></Route>
-                <Route path={"/habitos"} element={<Habits
-                    loginData={loginData}
-                    />}></Route>
-                <Route path={"/hoje"} element={<Today/>}></Route>
-                <Route path={"/historico"} element={<History/>}></Route>
-            </Routes>
-        </BrowserRouter>
+    return( 
+        <UserDataContext.Provider value={{ userContext, setUserContext }}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path={"/"} element={<Home />}></Route>
+                    <Route path={"/cadastro"} element={<Register/>}></Route>
+                    <Route path={"/habitos"} element={<Habits />}></Route>
+                    <Route path={"/hoje"} element={<Today/>}></Route>
+                    <Route path={"/historico"} element={<History/>}></Route>
+                </Routes>
+            </BrowserRouter>
+        </UserDataContext.Provider>    
     )
 }
 

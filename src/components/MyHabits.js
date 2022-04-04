@@ -8,20 +8,21 @@ const URLGET = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habit
 
 export default function MyHabits({token}){
 
-    let habitsData;
+    const [habitsData, setHabitsData] = useState();
 
     const config = {
         headers: {
             "Authorization": `Bearer ${token}`
         }
     }
+    
     let promise  = axios.get(URLGET, config)
     promise.then(response => {
         console.log(response.data)
-        habitsData = response.data;
+        setHabitsData(response.data);
     })
     
-    promise.catch(err => console.log(TypeError))
+    promise.catch(err => console.log(err))
 
     if(habitsData === null){
         return (
@@ -35,11 +36,12 @@ export default function MyHabits({token}){
             </Container>    
         )
     }
-    return(
-        <Container>
-            <h2>MyHabits</h2>
-        </Container>
-    )
+    else{
+        return(
+            <Container>
+                <h2>MyHabits</h2>
+            </Container>
+        )}
 }
 
 const Container = styled.div`
