@@ -1,6 +1,7 @@
 import Header from "./Header"
 import MyHabits from "./MyHabits"
 import Footer from "./Footer"
+import { Bars } from "react-loader-spinner"
 
 import styled from "styled-components"
 import { useState } from "react"
@@ -54,7 +55,7 @@ export default function Habits(){
                     </div>
                     <NewHabit></NewHabit>
                 </AddHabit>
-            <MyHabits token={loginData.token}/>
+            <MyHabits/>
             <Footer />
         </> 
     )
@@ -76,18 +77,7 @@ export default function Habits(){
                             setWeekDays={setWeekDays}
                         />
                     </div>
-                    <div className="add-habit-below">
-                        <button 
-                            className="cancel"
-                            onClick={()=>setHabitButton(false)}
-                        >Cancelar
-                        </button>
-                        <button
-                            className="save"
-                            onClick={()=>saveHabit()}
-                        >Salvar
-                        </button>
-                    </div>
+                    <Loading/>
                 </div>
             </div>    
         )}
@@ -114,6 +104,40 @@ export default function Habits(){
         )
     }    
 
+    function Loading(){
+        if(!loading){
+            return (
+                <div className="add-habit-below">
+                    <button 
+                        className="cancel"
+                        onClick={()=>setHabitButton(false)}
+                    >Cancelar
+                    </button>
+                    <button
+                        className="save"
+                        onClick={()=>saveHabit()}
+                    >Salvar
+                    </button>
+                </div>
+            )
+        }
+        if(loading){
+            return(
+                <div className="add-habit-below">
+                    <button 
+                        className="cancel"
+                    >Cancelar
+                    </button>
+                    <button
+                        className="save"
+                    >
+                    <Bars  color="#ffffff" height={20} width={20}/>    
+                    </button>
+                </div>
+            )
+        }
+    }
+
     function saveHabit(){
         setLoading(true)
         let saveHabitDays = [];
@@ -131,6 +155,7 @@ export default function Habits(){
         let promise = axios.post(URLPOST, habitPost,config)
         promise.then(response=> {
             setHabitButton(false)
+            setLoading(false)
         })
         promise.catch((err)=>{
             setLoading(false)
@@ -195,6 +220,9 @@ const AddHabit = styled.div`
         border-radius: 4.63636px;
         margin-right: 15px;
         border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .centralize{
         width: 100%;

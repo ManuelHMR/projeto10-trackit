@@ -2,15 +2,14 @@ import styled from "styled-components"
 
 import { useState, useEffect } from "react"
 import axios from "axios"
+import Habit from "./Habit";
 
-const URLGET = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today`
+const URLGET = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`
 
 export default function MyHabits(){
 
     const [habitsData, setHabitsData] = useState();
 
-    
-    
     useEffect(()=> {
         let loginData = JSON.parse(localStorage.getItem('login'));
         const config = {
@@ -20,13 +19,13 @@ export default function MyHabits(){
         }
         let promise  = axios.get(URLGET, config)
         promise.then(response => {
-            console.log(response)
+            console.log(response.data)
             setHabitsData(response.data);
         })
         promise.catch(err => console.log(err))
     }, [])
        
-    if(habitsData === undefined){
+    if(habitsData === undefined || habitsData.length === 0){
         return (
             <Container>
                 <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
@@ -36,7 +35,13 @@ export default function MyHabits(){
     else{
         return(
             <Container>
-                <h2>MyHabits</h2>
+                {habitsData.map((habit, index)=> 
+                    <Habit 
+                        key={habit.id} 
+                        id={habit.id}
+                        name={habit.name}
+                        days={habit.days}
+                        />)}
             </Container>
         )}
 }
