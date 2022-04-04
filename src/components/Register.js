@@ -2,12 +2,14 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { useState } from "react";
+import { Bars } from "react-loader-spinner";
 
 import LogoName from "./LogoName"
 
 const URLPOST = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up`;
 
 export default function Register(){
+    const [loading, setloading] = useState(false);
     const [userData, setUserData] = useState({
         email: "",
         name: "",
@@ -15,10 +17,15 @@ export default function Register(){
         password: ""
     })
     function registerUser(){
-        console.log(userData)
+        setloading(true)
         let promise = axios.post(URLPOST, userData);
         promise.then(response => console.log(response) )
-        promise.catch(err => console.log(err))
+        promise.catch(err => {
+            setloading(false)
+            alert(`${err}
+            
+            Confira os dados de registro
+            `)})
     }
 
     return(
@@ -52,16 +59,35 @@ export default function Register(){
                 value={userData.image}
                 onChange={ e => setUserData({...userData, image: e.target.value})}
             ></input>
-            <button 
-                type="submit"
-                onClick={() => registerUser()}
-            >Cadastrar</button>
+            <Button
+                loading={loading}
+                registerUser={registerUser}
+            />
             <Link to={"/"}>
                 <p>Já tem uma conta? Faça login!</p>
             </Link>
         </HomeMain>
     )
 }
+
+function Button({registerUser, loading}){
+    if(!loading){
+        return(
+            <button 
+                type="submit"
+                onClick={() => registerUser()}
+            >Cadastrar</button>
+        )
+    }
+    if(loading){
+        return(
+            <button className="waiting">
+                <Bars color="#ffffff" height={20} width={20} />
+            </button>
+        )
+    }
+}
+
 const HomeMain = styled.div`
     display: flex;
     flex-direction: column;
@@ -100,6 +126,12 @@ const HomeMain = styled.div`
         text-decoration-line: underline;
         color: #52B6FF;
         margin-top: 25px;
+    }
+    .waiting{
+        background-color: #52B6FF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `
 

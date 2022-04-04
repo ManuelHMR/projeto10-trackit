@@ -15,17 +15,25 @@ const [userData, setUserData] = useState({
     email: '',
     password: ''
 })
+const [loading, setloading] = useState(false);
+
 const { setUserContext } = useContext(UserDataContext);
 const navigate = useNavigate();
 
 function login(){
     let promise = axios.post(URLPOST, userData);
+    setloading(true)
     promise.then(response => {
         localStorage.setItem('login', JSON.stringify(response.data))
         setUserContext({ name: response.data.name, image: response.data.image })
         navigate('/habitos')
     });
-    promise.catch(err => console.log(err));
+    promise.catch(err => {
+        setloading(false)
+        alert(`${err}
+        
+        Confira os dados de acesso`)
+    });
 }
     
     return(
@@ -45,17 +53,36 @@ function login(){
                 value={userData.password}
                 onChange={e => setUserData({...userData, password: e.target.value})}
             ></input>
-            <button 
-                type="submit"
-                onClick={() => login()}
-            >Entrar</button>  
+            <Button
+                login={login}
+                loading={loading}
+            />
             <Link to={"/cadastro"}>
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
-            <Bars color="#00BFFF" height={80} width={80} />
         </Container>
     )
 }
+
+function Button({login, loading}){
+    if(!loading){
+        return(
+            <button 
+                type="submit"
+                onClick={() => login()}
+            >Entrar</button>
+        )
+    }
+    if(loading){
+        return(
+            <button className="waiting">
+                <Bars color="#ffffff" height={20} width={20} />
+            </button>
+        )
+    }
+}
+
+
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -101,5 +128,11 @@ const Container = styled.div`
         text-decoration-line: underline;
         color: #52B6FF;
         margin-top: 25px;
+    }
+    .waiting{
+        background-color: #52B6FF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `

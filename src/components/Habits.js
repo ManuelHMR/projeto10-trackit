@@ -5,6 +5,7 @@ import Footer from "./Footer"
 
 import styled from "styled-components"
 import { useState } from "react"
+import UserDataContext from './../providers/UserDataContext';
 
 export default function Habits(){
 
@@ -44,7 +45,7 @@ export default function Habits(){
     }
     return(
         <>
-            <Header image={loginData.image}/>
+            <Header/>
                 <AddHabit>
                     <div className="addHabitUp">
                         <h2>Meus hábitos</h2>

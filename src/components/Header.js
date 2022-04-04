@@ -1,10 +1,13 @@
+import {react, useContext} from "react";
 import styled from "styled-components";
+import UserDataContext from './../providers/UserDataContext';
 
-export default function Header({image}){
+export default function Header(){
+    const { userContext } = useContext(UserDataContext)
     return(
         <Container>
             <h1>TrackIt</h1>
-            <img src={image} alt='user`s profile'/>
+            <img src={userContext.image} alt='user`s profile'/>
         </Container>
     )
 }
